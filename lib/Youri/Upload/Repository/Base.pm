@@ -72,6 +72,19 @@ sub get_older_releases {
     );
 }
 
+=head2 get_last_older_release($package, $target)
+
+Get last older release from a package found in its installation directory, as a
+single package object.
+
+=cut
+
+sub get_last_older_release {
+    my ($self, $package, $target) = @_;
+
+    return ($self->get_older_releases($package, $target))[0];
+}
+
 =head2 get_newer_releases($package, $target)
 
 Get all newer releases from a package found in its installation directory, as a
