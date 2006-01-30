@@ -105,7 +105,7 @@ sub get_obsoleted_packages {
         push(@packages,
             map { $self->{_class}->new(file => $_) }
             $self->get_files(
-                $self->destination($package, $target),
+                $self->destination_dir($package, $target),
                 $pattern
             )
         );
@@ -127,7 +127,7 @@ sub get_releases {
     my @packages = 
         map { $self->{_class}->new(file => $_) }
         $self->get_files(
-            $self->destination($package, $target),
+            $self->destination_dir($package, $target),
             $self->{_class}->pattern($package->name())
         );
 
@@ -157,15 +157,29 @@ sub get_files {
     return @files;
 }
 
-=head2 destination($package, $target)
+=head2 destination_dir($package, $target)
 
-Returns destination path for given L<Youri::Package::Base> object inside
-repository.
+Returns destination directory for given L<Youri::Package::Base> object and given target.
 
 =cut
 
-sub destination {
+sub destination_dir {
     croak "Not implemented method";
+}
+
+=head2 destination_file($package, $target)
+
+Returns destination file for given L<Youri::Package::Base> object and given target.
+
+=cut
+
+sub destination_file {
+    my ($self, $package, $target) = @_;
+
+    return 
+        $self->destination_dir($package, $target) .
+        '/' .
+        $package->filename();
 }
 
 =head1 SUBCLASSING
