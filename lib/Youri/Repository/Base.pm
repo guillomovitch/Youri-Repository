@@ -179,6 +179,7 @@ list of files.
 sub get_files {
     my ($self, $path, $pattern) = @_;
     croak "Not a class method" unless ref $self;
+    print "Looking for files in $self->{_path}/$path\n" if $self->{_test};
 
     my @files =
         grep { -f }
