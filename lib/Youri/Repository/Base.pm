@@ -78,6 +78,7 @@ list of package objects.
 
 sub get_older_releases {
     my ($self, $package, $target) = @_;
+    croak "Not a class method" unless ref $self;
 
     return $self->get_releases(
         $package,
@@ -95,6 +96,7 @@ single package object.
 
 sub get_last_older_release {
     my ($self, $package, $target) = @_;
+    croak "Not a class method" unless ref $self;
 
     return ($self->get_older_releases($package, $target))[0];
 }
@@ -125,6 +127,7 @@ objects.
 
 sub get_obsoleted_packages {
     my ($self, $package, $target) = @_;
+    croak "Not a class method" unless ref $self;
 
     my @packages;
     foreach my $obsolete ($package->obsoletes()) {
@@ -150,6 +153,7 @@ optional filter, as a list of package objects.
 
 sub get_releases {
     my ($self, $package, $target, $filter) = @_;
+    croak "Not a class method" unless ref $self;
 
     my @packages = 
         map { $self->{_class}->new(file => $_) }
@@ -174,6 +178,7 @@ list of files.
 
 sub get_files {
     my ($self, $path, $pattern) = @_;
+    croak "Not a class method" unless ref $self;
 
     my @files =
         grep { -f }
@@ -202,6 +207,7 @@ Returns destination file for given L<Youri::Package::Base> object and given targ
 
 sub destination_file {
     my ($self, $package, $target) = @_;
+    croak "Not a class method" unless ref $self;
 
     return 
         $self->destination_dir($package, $target) .
