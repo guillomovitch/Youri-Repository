@@ -55,7 +55,7 @@ sub _init {
 
 =head1 INSTANCE METHODS
 
-=head2 get_older_releases($package)
+=head2 get_older_releases($package, $target)
 
 Get all older releases from a package found in its installation directory, as a
 list of package objects.
@@ -63,15 +63,16 @@ list of package objects.
 =cut
 
 sub get_older_releases {
-    my ($self, $package) = @_;
+    my ($self, $package, $target) = @_;
 
     return $self->get_releases(
         $package,
+        $target,
         sub { return $package->compare_pkg($_[0]) > 0 }
     );
 }
 
-=head2 get_newer_releases($package)
+=head2 get_newer_releases($package, $target)
 
 Get all newer releases from a package found in its installation directory, as a
 list of package objects.
@@ -79,15 +80,16 @@ list of package objects.
 =cut
 
 sub get_newer_releases {
-    my ($self, $package) = @_;
+    my ($self, $package, $target) = @_;
 
     return $self->get_releases(
         $package,
+        $target,
         sub { return $_[0]->compare_pkg($package) > 0 }
     );
 }
 
-=head2 get_obsoleted_releases($package)
+=head2 get_obsoleted_releases($package, $target)
 
 Get all packages obsoleted by given one, as a list of C<Youri::Package::Base>
 objects.
@@ -95,7 +97,7 @@ objects.
 =cut
 
 sub get_obsoleted_packages {
-    my ($self, $package) = @_;
+    my ($self, $package, $target) = @_;
 
     my @packages;
     foreach my $obsolete ($package->obsoletes()) {
@@ -103,7 +105,7 @@ sub get_obsoleted_packages {
         push(@packages,
             map { $self->{_class}->new(file => $_) }
             $self->get_files(
-                $self->destination($package),
+                $self->destination($package, $target),
                 $pattern
             )
         );
@@ -120,15 +122,13 @@ optional filter, as a list of package objects.
 =cut
 
 sub get_releases {
-    my ($self, $package, $filter) = @_;
-
-    my $name = $package->name();
+    my ($self, $package, $target, $filter) = @_;
 
     my @packages = 
         map { $self->{_class}->new(file => $_) }
         $self->get_files(
-            $self->destination($package),
-            $self->{_class}->pattern($name)
+            $self->destination($package, $target),
+            $self->{_class}->pattern($package->name())
         );
 
     @packages = grep { $filter->($_) } @packages if $filter;
@@ -157,7 +157,7 @@ sub get_files {
     return @files;
 }
 
-=head2 destination($package)
+=head2 destination($package, $target)
 
 Returns destination path for given L<Youri::Package::Base> object inside
 repository.
