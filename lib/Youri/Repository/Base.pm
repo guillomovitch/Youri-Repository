@@ -30,18 +30,18 @@ Warning: do not call directly, call subclass constructor instead.
 sub new {
     my $class   = shift;
     my %options = (
-        path    => '', # path to top-level directory
-        class   => '', # class to use for packages
-        test    => 0,  # test mode
-        verbose => 0,  # verbose mode
+        path          => '', # path to top-level directory
+        package_class => '', # class to use for packages
+        test          => 0,  # test mode
+        verbose       => 0,  # verbose mode
         @_
     );
 
     my $self = bless {
-        _path    => $options{path},
-        _class   => $options{class},
-        _test    => $options{test},
-        _verbose => $options{verbose},
+        _path          => $options{path},
+        _package_class => $options{package_class},
+        _test          => $options{test},
+        _verbose       => $options{verbose},
     }, $class;
 
     $self->_init(%options);
@@ -54,6 +54,20 @@ sub _init {
 }
 
 =head1 INSTANCE METHODS
+
+=head2 package_class()
+
+Return package class for this repository.
+
+=cut
+
+sub package_class {
+    my ($self) = @_;
+    croak "Not a class method" unless ref $self;
+
+    return $self->{_package_class};
+}
+
 
 =head2 get_older_releases($package, $target)
 
