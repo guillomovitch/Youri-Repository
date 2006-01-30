@@ -1,9 +1,9 @@
 # $Id: Base.pm 631 2006-01-26 22:22:23Z guillomovitch $
-package Youri::Upload::Repository::Base;
+package Youri::Repository::Base;
 
 =head1 NAME
 
-Youri::Upload::Repository::Base - Abstract repository module class
+Youri::Repository::Base - Abstract repository module class
 
 =head1 DESCRIPTION
 
@@ -19,7 +19,7 @@ use Carp;
 
 =head2 new(%args)
 
-Creates and returns a new Youri::Upload::Repository object.
+Creates and returns a new Youri::Repository object.
 
 No generic parameters (subclasses may define additional ones).
 
