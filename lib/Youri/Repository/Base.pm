@@ -135,7 +135,7 @@ sub get_obsoleted_packages {
         push(@packages,
             map { $self->{_package_class}->new(file => $_) }
             $self->get_files(
-                $self->destination_dir($package, $target),
+                $self->_destination_dir($package, $target),
                 $pattern
             )
         );
@@ -158,7 +158,7 @@ sub get_releases {
     my @packages = 
         map { $self->{_package_class}->new(file => $_) }
         $self->get_files(
-            $self->destination_dir($package, $target),
+            $self->_destination_dir($package, $target),
             $self->{_package_class}->pattern($package->name())
         );
 
@@ -197,7 +197,13 @@ Returns destination directory for given L<Youri::Package::Base> object and given
 =cut
 
 sub destination_dir {
-    croak "Not implemented method";
+    my ($self, $package, $target) = @_;
+    croak "Not a class method" unless ref $self;
+
+    return
+        $self->{_path} .
+        '/' .
+        $self->_destination_dir();
 }
 
 =head2 destination_file($package, $target)
