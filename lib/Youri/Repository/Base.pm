@@ -83,7 +83,7 @@ sub get_older_releases {
     return $self->get_releases(
         $package,
         $target,
-        sub { return $package->compare_pkg($_[0]) > 0 }
+        sub { return $package->compare($_[0]) > 0 }
     );
 }
 
@@ -114,7 +114,7 @@ sub get_newer_releases {
     return $self->get_releases(
         $package,
         $target,
-        sub { return $_[0]->compare_pkg($package) > 0 }
+        sub { return $_[0]->compare($package) > 0 }
     );
 }
 
@@ -165,7 +165,7 @@ sub get_releases {
     @packages = grep { $filter->($_) } @packages if $filter;
 
     return
-        sort { $b->compare_pkg($a) } # sort by release order
+        sort { $b->compare($a) } # sort by release order
         @packages;
 }
 
