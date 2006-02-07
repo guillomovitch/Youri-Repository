@@ -131,9 +131,9 @@ sub get_obsoleted_packages {
 
     my @packages;
     foreach my $obsolete ($package->obsoletes()) {
-        my $pattern = $self->{_class}->pattern($obsolete);
+        my $pattern = $self->{_package_class}->pattern($obsolete);
         push(@packages,
-            map { $self->{_class}->new(file => $_) }
+            map { $self->{_package_class}->new(file => $_) }
             $self->get_files(
                 $self->destination_dir($package, $target),
                 $pattern
@@ -156,10 +156,10 @@ sub get_releases {
     croak "Not a class method" unless ref $self;
 
     my @packages = 
-        map { $self->{_class}->new(file => $_) }
+        map { $self->{_package_class}->new(file => $_) }
         $self->get_files(
             $self->destination_dir($package, $target),
-            $self->{_class}->pattern($package->name())
+            $self->{_package_class}->pattern($package->name())
         );
 
     @packages = grep { $filter->($_) } @packages if $filter;
