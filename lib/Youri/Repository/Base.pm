@@ -203,7 +203,7 @@ sub destination_dir {
     return
         $self->{_path} .
         '/' .
-        $self->_destination_dir();
+        $self->_destination_dir($package, $target);
 }
 
 =head2 destination_file($package, $target)
