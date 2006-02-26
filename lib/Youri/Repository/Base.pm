@@ -30,7 +30,9 @@ Warning: do not call directly, call subclass constructor instead.
 sub new {
     my $class   = shift;
     my %options = (
-        path          => '', # path to top-level directory
+        install_root  => '', # path to top-level directory
+        archive_root  => '', # path to top-level directory
+        version_root  => '', # path to top-level directory
         package_class => '', # class to use for packages
         test          => 0,  # test mode
         verbose       => 0,  # verbose mode
@@ -38,7 +40,9 @@ sub new {
     );
 
     my $self = bless {
-        _path          => $options{path},
+        _install_root  => $options{install_root},
+        _archive_root  => $options{archive_root},
+        _version_root  => $options{version_root},
         _package_class => $options{package_class},
         _test          => $options{test},
         _verbose       => $options{verbose},
@@ -137,7 +141,7 @@ sub get_obsoleted_packages {
         push(@packages,
             map { $self->{_package_class}->new(file => $_) }
             $self->get_files(
-                $self->get_internal_destination_dir($package, $target, $define),
+                $self->get_internal_install_dir($package, $target, $define),
                 $pattern
             )
         );
@@ -160,7 +164,7 @@ sub get_releases {
     my @packages = 
         map { $self->{_package_class}->new(file => $_) }
         $self->get_files(
-            $self->get_internal_destination_dir($package, $target, $define),
+            $self->get_internal_install_dir($package, $target, $define),
             $self->{_package_class}->pattern($package->name())
         );
 
@@ -192,46 +196,104 @@ sub get_files {
     return @files;
 }
 
-=head2 get_destination_dir($package, $target, $define)
+=head2 get_install_dir($package, $target, $define)
 
-Returns destination directory for given L<Youri::Package::Base> object and given target.
+Returns install destination directory for given L<Youri::Package::Base> object
+and given target.
 
 =cut
 
-sub get_destination_dir {
+sub get_install_dir {
     my ($self, $package, $target, $define) = @_;
     croak "Not a class method" unless ref $self;
 
     return
-        $self->{_path} .
+        $self->{_install_root} .
         '/' .
-        $self->get_internal_destination_dir($package, $target, $define);
+        $self->get_internal_install_dir($package, $target, $define);
 }
 
-=head2 get_destination_file($package, $target, $define)
+=head2 get_archive_dir($package, $target, $define)
 
-Returns destination file for given L<Youri::Package::Base> object and given target.
+Returns archiving destination directory for given L<Youri::Package::Base> object
+and given target.
 
 =cut
 
-sub get_destination_file {
+sub get_archive_dir {
+    my ($self, $package, $target, $define) = @_;
+    croak "Not a class method" unless ref $self;
+
+    return
+        $self->{_archive_root} .
+        '/' .
+        $self->get_internal_archive_dir($package, $target, $define);
+}
+
+=head2 get_version_dir($package, $target, $define)
+
+Returns versioning destination directory for given L<Youri::Package::Base>
+object and given target.
+
+=cut
+
+sub get_version_dir {
+    my ($self, $package, $target, $define) = @_;
+    croak "Not a class method" unless ref $self;
+
+    return
+        $self->{_version_root} .
+        '/' .
+        $self->get_internal_version_dir($package, $target, $define);
+}
+
+=head2 get_install_file($package, $target, $define)
+
+Returns install destination file for given L<Youri::Package::Base> object and
+given target.
+
+=cut
+
+sub get_installation_file {
     my ($self, $package, $target, $define) = @_;
     croak "Not a class method" unless ref $self;
 
     return 
-        $self->get_destination_dir($package, $target, $define) .
+        $self->get_install_dir($package, $target, $define) .
         '/' .
         $package->filename();
 }
 
-=head2 get_internal_destination_dir($package, $target, $define)
+=head2 get_internal_installation_dir($package, $target, $define)
 
-Returns internal (relative to repository top-level) destination directory for
-given L<Youri::Package::Base> object and given target.
+Returns internal (relative to repository top-level) installation destination
+directory for given L<Youri::Package::Base> object and given target.
 
 =cut
 
-sub get_internal_destination_dir {
+sub get_internal_installation_dir {
+    croak "Not implemented method";
+}
+
+=head2 get_internal_archive_dir($package, $target, $define)
+
+Returns internal (relative to repository top-level) archiving destination
+directory for given L<Youri::Package::Base> object and given target.
+
+=cut
+
+sub get_internal_archive_dir {
+    croak "Not implemented method";
+}
+
+=head2 get_internal_version_dir($package, $target, $define)
+
+Returns internal (relative to repository top-level) versioning destionation
+directory for given L<Youri::Package::Base> object and given target.
+
+=cut
+
+sub get_internal_version_dir {
     croak "Not implemented method";
 }
 
@@ -241,7 +303,11 @@ The following methods have to be implemented:
 
 =over
 
-=item destination
+=item get_internal_install_dir
+
+=item get_internal_archive_dir
+
+=item get_internal_version_dir
 
 =back
 
