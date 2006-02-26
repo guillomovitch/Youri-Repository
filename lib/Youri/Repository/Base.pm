@@ -69,7 +69,7 @@ sub package_class {
 }
 
 
-=head2 get_older_releases($package, $target)
+=head2 get_older_releases($package, $target, $define)
 
 Get all older releases from a package found in its installation directory, as a
 list of package objects.
@@ -88,7 +88,7 @@ sub get_older_releases {
     );
 }
 
-=head2 get_last_older_release($package, $target)
+=head2 get_last_older_release($package, $target, $define)
 
 Get last older release from a package found in its installation directory, as a
 single package object.
@@ -102,7 +102,7 @@ sub get_last_older_release {
     return ($self->get_older_releases($package, $target, $define))[0];
 }
 
-=head2 get_newer_releases($package, $target)
+=head2 get_newer_releases($package, $target, $define)
 
 Get all newer releases from a package found in its installation directory, as a
 list of package objects.
@@ -120,7 +120,7 @@ sub get_newer_releases {
     );
 }
 
-=head2 get_obsoleted_releases($package, $target)
+=head2 get_obsoleted_packages($package, $target, $define)
 
 Get all packages obsoleted by given one, as a list of C<Youri::Package::Base>
 objects.
@@ -146,7 +146,7 @@ sub get_obsoleted_packages {
     return @packages;
 }
 
-=head2 get_releases($package, $filter)
+=head2 get_releases($package, $target, $define, $filter)
 
 Get all releases from a package found in its installation directory, using an
 optional filter, as a list of package objects.
@@ -192,7 +192,7 @@ sub get_files {
     return @files;
 }
 
-=head2 get_destination_dir($package, $target)
+=head2 get_destination_dir($package, $target, $define)
 
 Returns destination directory for given L<Youri::Package::Base> object and given target.
 
@@ -208,7 +208,7 @@ sub get_destination_dir {
         $self->get_internal_destination_dir($package, $target, $define);
 }
 
-=head2 get_destination_file($package, $target)
+=head2 get_destination_file($package, $target, $define)
 
 Returns destination file for given L<Youri::Package::Base> object and given target.
 
@@ -222,6 +222,17 @@ sub get_destination_file {
         $self->get_destination_dir($package, $target, $define) .
         '/' .
         $package->filename();
+}
+
+=head2 get_internal_destination_dir($package, $target, $define)
+
+Returns internal (relative to repository top-level) destination directory for
+given L<Youri::Package::Base> object and given target.
+
+=cut
+
+sub get_internal_destination_dir {
+    croak "Not implemented method";
 }
 
 =head1 SUBCLASSING
