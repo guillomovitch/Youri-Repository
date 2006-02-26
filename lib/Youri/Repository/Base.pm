@@ -135,7 +135,7 @@ sub get_obsoleted_packages {
         push(@packages,
             map { $self->{_package_class}->new(file => $_) }
             $self->get_files(
-                $self->_destination_dir($package, $target),
+                $self->get_internal_destination_dir($package, $target),
                 $pattern
             )
         );
@@ -158,7 +158,7 @@ sub get_releases {
     my @packages = 
         map { $self->{_package_class}->new(file => $_) }
         $self->get_files(
-            $self->_destination_dir($package, $target),
+            $self->get_internal_destination_dir($package, $target),
             $self->{_package_class}->pattern($package->name())
         );
 
@@ -190,34 +190,34 @@ sub get_files {
     return @files;
 }
 
-=head2 destination_dir($package, $target)
+=head2 get_destination_dir($package, $target)
 
 Returns destination directory for given L<Youri::Package::Base> object and given target.
 
 =cut
 
-sub destination_dir {
+sub get_destination_dir {
     my ($self, $package, $target) = @_;
     croak "Not a class method" unless ref $self;
 
     return
         $self->{_path} .
         '/' .
-        $self->_destination_dir($package, $target);
+        $self->get_internal_destination_dir($package, $target);
 }
 
-=head2 destination_file($package, $target)
+=head2 get_destination_file($package, $target)
 
 Returns destination file for given L<Youri::Package::Base> object and given target.
 
 =cut
 
-sub destination_file {
+sub get_destination_file {
     my ($self, $package, $target) = @_;
     croak "Not a class method" unless ref $self;
 
     return 
-        $self->destination_dir($package, $target) .
+        $self->get_destination_dir($package, $target) .
         '/' .
         $package->filename();
 }
