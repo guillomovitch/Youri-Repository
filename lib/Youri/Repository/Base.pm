@@ -77,12 +77,13 @@ list of package objects.
 =cut
 
 sub get_older_releases {
-    my ($self, $package, $target) = @_;
+    my ($self, $package, $target, $define) = @_;
     croak "Not a class method" unless ref $self;
 
     return $self->get_releases(
         $package,
         $target,
+        $define,
         sub { return $package->compare($_[0]) > 0 }
     );
 }
@@ -95,10 +96,10 @@ single package object.
 =cut
 
 sub get_last_older_release {
-    my ($self, $package, $target) = @_;
+    my ($self, $package, $target, $define) = @_;
     croak "Not a class method" unless ref $self;
 
-    return ($self->get_older_releases($package, $target))[0];
+    return ($self->get_older_releases($package, $target, $define))[0];
 }
 
 =head2 get_newer_releases($package, $target)
@@ -109,11 +110,12 @@ list of package objects.
 =cut
 
 sub get_newer_releases {
-    my ($self, $package, $target) = @_;
+    my ($self, $package, $target, $define) = @_;
 
     return $self->get_releases(
         $package,
         $target,
+        $define,
         sub { return $_[0]->compare($package) > 0 }
     );
 }
@@ -126,7 +128,7 @@ objects.
 =cut
 
 sub get_obsoleted_packages {
-    my ($self, $package, $target) = @_;
+    my ($self, $package, $target, $define) = @_;
     croak "Not a class method" unless ref $self;
 
     my @packages;
@@ -135,7 +137,7 @@ sub get_obsoleted_packages {
         push(@packages,
             map { $self->{_package_class}->new(file => $_) }
             $self->get_files(
-                $self->get_internal_destination_dir($package, $target),
+                $self->get_internal_destination_dir($package, $target, $define),
                 $pattern
             )
         );
@@ -152,13 +154,13 @@ optional filter, as a list of package objects.
 =cut
 
 sub get_releases {
-    my ($self, $package, $target, $filter) = @_;
+    my ($self, $package, $target, $define, $filter) = @_;
     croak "Not a class method" unless ref $self;
 
     my @packages = 
         map { $self->{_package_class}->new(file => $_) }
         $self->get_files(
-            $self->get_internal_destination_dir($package, $target),
+            $self->get_internal_destination_dir($package, $target, $define),
             $self->{_package_class}->pattern($package->name())
         );
 
@@ -197,13 +199,13 @@ Returns destination directory for given L<Youri::Package::Base> object and given
 =cut
 
 sub get_destination_dir {
-    my ($self, $package, $target) = @_;
+    my ($self, $package, $target, $define) = @_;
     croak "Not a class method" unless ref $self;
 
     return
         $self->{_path} .
         '/' .
-        $self->get_internal_destination_dir($package, $target);
+        $self->get_internal_destination_dir($package, $target, $define);
 }
 
 =head2 get_destination_file($package, $target)
@@ -213,11 +215,11 @@ Returns destination file for given L<Youri::Package::Base> object and given targ
 =cut
 
 sub get_destination_file {
-    my ($self, $package, $target) = @_;
+    my ($self, $package, $target, $define) = @_;
     croak "Not a class method" unless ref $self;
 
     return 
-        $self->get_destination_dir($package, $target) .
+        $self->get_destination_dir($package, $target, $define) .
         '/' .
         $package->filename();
 }
