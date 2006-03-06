@@ -1,9 +1,9 @@
 # $Id: Base.pm 631 2006-01-26 22:22:23Z guillomovitch $
-package Youri::Repository::Base;
+package Youri::Repository;
 
 =head1 NAME
 
-Youri::Repository::Base - Abstract repository module class
+Youri::Repository - Abstract repository module class
 
 =head1 DESCRIPTION
 
@@ -126,7 +126,7 @@ sub get_newer_releases {
 
 =head2 get_obsoleted_packages($package, $target, $define)
 
-Get all packages obsoleted by given one, as a list of C<Youri::Package::Base>
+Get all packages obsoleted by given one, as a list of C<Youri::Package>
 objects.
 
 =cut
@@ -198,7 +198,7 @@ sub get_files {
 
 =head2 get_install_dir($package, $target, $define)
 
-Returns install destination directory for given L<Youri::Package::Base> object
+Returns install destination directory for given L<Youri::Package> object
 and given target.
 
 =cut
@@ -215,7 +215,7 @@ sub get_install_dir {
 
 =head2 get_archive_dir($package, $target, $define)
 
-Returns archiving destination directory for given L<Youri::Package::Base> object
+Returns archiving destination directory for given L<Youri::Package> object
 and given target.
 
 =cut
@@ -232,7 +232,7 @@ sub get_archive_dir {
 
 =head2 get_version_dir($package, $target, $define)
 
-Returns versioning destination directory for given L<Youri::Package::Base>
+Returns versioning destination directory for given L<Youri::Package>
 object and given target.
 
 =cut
@@ -249,7 +249,7 @@ sub get_version_dir {
 
 =head2 get_install_file($package, $target, $define)
 
-Returns install destination file for given L<Youri::Package::Base> object and
+Returns install destination file for given L<Youri::Package> object and
 given target.
 
 =cut
@@ -267,7 +267,7 @@ sub get_installation_file {
 =head2 get_internal_installation_dir($package, $target, $define)
 
 Returns internal (relative to repository top-level) installation destination
-directory for given L<Youri::Package::Base> object and given target.
+directory for given L<Youri::Package> object and given target.
 
 =cut
 
@@ -278,7 +278,7 @@ sub get_internal_installation_dir {
 =head2 get_internal_archive_dir($package, $target, $define)
 
 Returns internal (relative to repository top-level) archiving destination
-directory for given L<Youri::Package::Base> object and given target.
+directory for given L<Youri::Package> object and given target.
 
 =cut
 
@@ -289,7 +289,7 @@ sub get_internal_archive_dir {
 =head2 get_internal_version_dir($package, $target, $define)
 
 Returns internal (relative to repository top-level) versioning destionation
-directory for given L<Youri::Package::Base> object and given target.
+directory for given L<Youri::Package> object and given target.
 
 =cut
 
