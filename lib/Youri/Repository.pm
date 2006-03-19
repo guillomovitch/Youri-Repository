@@ -33,7 +33,6 @@ sub new {
         install_root  => '', # path to top-level directory
         archive_root  => '', # path to top-level directory
         version_root  => '', # path to top-level directory
-        package_class => '', # class to use for packages
         test          => 0,  # test mode
         verbose       => 0,  # verbose mode
         @_
@@ -43,7 +42,6 @@ sub new {
         _install_root  => $options{install_root},
         _archive_root  => $options{archive_root},
         _version_root  => $options{version_root},
-        _package_class => $options{package_class},
         _test          => $options{test},
         _verbose       => $options{verbose},
     }, $class;
@@ -59,18 +57,6 @@ sub _init {
 
 =head1 INSTANCE METHODS
 
-=head2 package_class()
-
-Return package class for this repository.
-
-=cut
-
-sub package_class {
-    my ($self) = @_;
-    croak "Not a class method" unless ref $self;
-
-    return $self->{_package_class};
-}
 
 
 =head2 get_older_releases($package, $target, $define)
@@ -137,10 +123,10 @@ sub get_releases {
     croak "Not a class method" unless ref $self;
 
     my @packages = 
-        map { $self->{_package_class}->new(file => $_) }
+        map { $self->get_package_class()->new(file => $_) }
         $self->get_files(
             $self->get_internal_install_dir($package, $target, $define),
-            $self->{_package_class}->pattern($package->name())
+            $self->get_package_class()->pattern($package->name())
         );
 
     @packages = grep { $filter->($_) } @packages if $filter;
@@ -163,9 +149,9 @@ sub get_obsoleted_packages {
 
     my @packages;
     foreach my $obsolete ($package->obsoletes()) {
-        my $pattern = $self->{_package_class}->pattern($obsolete);
+        my $pattern = $self->get_package_class()->pattern($obsolete);
         push(@packages,
-            map { $self->{_package_class}->new(file => $_) }
+            map { $self->get_package_class()->new(file => $_) }
             $self->get_files(
                 $self->get_internal_install_dir($package, $target, $define),
                 $pattern
@@ -279,6 +265,16 @@ sub get_installation_file {
         $self->get_install_dir($package, $target, $define) .
         '/' .
         $package->filename();
+}
+
+=head2 get_package_class()
+
+Return package class for this repository.
+
+=cut
+
+sub get_package_class {
+    croak "Not implemented method";
 }
 
 =head2 get_internal_installation_dir($package, $target, $define)
