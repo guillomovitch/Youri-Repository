@@ -76,7 +76,7 @@ sub package_class {
 =head2 get_older_releases($package, $target, $define)
 
 Get all older releases from a package found in its installation directory, as a
-list of package objects.
+list of C<Youri::Package> objects.
 
 =cut
 
@@ -95,7 +95,7 @@ sub get_older_releases {
 =head2 get_last_older_release($package, $target, $define)
 
 Get last older release from a package found in its installation directory, as a
-single package object.
+single C<Youri::Package> object.
 
 =cut
 
@@ -109,7 +109,7 @@ sub get_last_older_release {
 =head2 get_newer_releases($package, $target, $define)
 
 Get all newer releases from a package found in its installation directory, as a
-list of package objects.
+list of C<Youri::Package> objects.
 
 =cut
 
@@ -122,6 +122,32 @@ sub get_newer_releases {
         $define,
         sub { return $_[0]->compare($package) > 0 }
     );
+}
+
+
+=head2 get_releases($package, $target, $define, $filter)
+
+Get all releases from a package found in its installation directory, using an
+optional filter, as a list of C<Youri::Package> objects.
+
+=cut
+
+sub get_releases {
+    my ($self, $package, $target, $define, $filter) = @_;
+    croak "Not a class method" unless ref $self;
+
+    my @packages = 
+        map { $self->{_package_class}->new(file => $_) }
+        $self->get_files(
+            $self->get_internal_install_dir($package, $target, $define),
+            $self->{_package_class}->pattern($package->name())
+        );
+
+    @packages = grep { $filter->($_) } @packages if $filter;
+
+    return
+        sort { $b->compare($a) } # sort by release order
+        @packages;
 }
 
 =head2 get_obsoleted_packages($package, $target, $define)
@@ -150,29 +176,20 @@ sub get_obsoleted_packages {
     return @packages;
 }
 
-=head2 get_releases($package, $target, $define, $filter)
+=head2 get_replaced_packages($package, $target, $define)
 
-Get all releases from a package found in its installation directory, using an
-optional filter, as a list of package objects.
+Get all packages replaced by given one, as a list of C<Youri::Package>
+objects.
 
 =cut
 
-sub get_releases {
-    my ($self, $package, $target, $define, $filter) = @_;
+sub get_replaced_packages {
+    my ($self, $package, $target, $define) = @_;
     croak "Not a class method" unless ref $self;
 
-    my @packages = 
-        map { $self->{_package_class}->new(file => $_) }
-        $self->get_files(
-            $self->get_internal_install_dir($package, $target, $define),
-            $self->{_package_class}->pattern($package->name())
-        );
-
-    @packages = grep { $filter->($_) } @packages if $filter;
-
-    return
-        sort { $b->compare($a) } # sort by release order
-        @packages;
+    return 
+        $self->get_older_releases($package, $target, $define),
+        $self->get_obsoleted_packages($package, $target, $define);
 }
 
 =head2 get_files($path, $pattern)
