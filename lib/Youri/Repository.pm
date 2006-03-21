@@ -126,7 +126,7 @@ sub get_releases {
         map { $self->get_package_class()->new(file => $_) }
         $self->get_files(
             $self->get_internal_install_dir($package, $target, $define),
-            $self->get_package_class()->pattern($package->name())
+            $self->get_package_class()->pattern($package->get_name())
         );
 
     @packages = grep { $filter->($_) } @packages if $filter;
@@ -148,7 +148,7 @@ sub get_obsoleted_packages {
     croak "Not a class method" unless ref $self;
 
     my @packages;
-    foreach my $obsolete ($package->obsoletes()) {
+    foreach my $obsolete ($package->get_obsoletes()) {
         my $pattern = $self->get_package_class()->pattern($obsolete);
         push(@packages,
             map { $self->get_package_class()->new(file => $_) }
@@ -264,7 +264,7 @@ sub get_installation_file {
     return 
         $self->get_install_dir($package, $target, $define) .
         '/' .
-        $package->filename();
+        $package->get_filename();
 }
 
 =head2 get_package_class()
