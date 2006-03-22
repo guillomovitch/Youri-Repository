@@ -271,44 +271,20 @@ sub get_installation_file {
 
 Return package class for this repository.
 
-=cut
-
-sub get_package_class {
-    croak "Not implemented method";
-}
-
 =head2 get_internal_installation_dir($package, $target, $define)
 
 Returns internal (relative to repository top-level) installation destination
 directory for given L<Youri::Package> object and given target.
-
-=cut
-
-sub get_internal_installation_dir {
-    croak "Not implemented method";
-}
 
 =head2 get_internal_archive_dir($package, $target, $define)
 
 Returns internal (relative to repository top-level) archiving destination
 directory for given L<Youri::Package> object and given target.
 
-=cut
-
-sub get_internal_archive_dir {
-    croak "Not implemented method";
-}
-
 =head2 get_internal_version_dir($package, $target, $define)
 
 Returns internal (relative to repository top-level) versioning destionation
 directory for given L<Youri::Package> object and given target.
-
-=cut
-
-sub get_internal_version_dir {
-    croak "Not implemented method";
-}
 
 =head1 SUBCLASSING
 
