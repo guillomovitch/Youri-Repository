@@ -130,7 +130,7 @@ sub get_releases {
         $self->get_files(
             $self->{_install_root},
             $self->get_internal_install_dir($package, $target, $define),
-            $self->get_package_class()->pattern($package->get_name())
+            $self->get_package_class()->get_pattern($package->get_name())
         );
 
     @packages = grep { $filter->($_) } @packages if $filter;
@@ -153,7 +153,7 @@ sub get_obsoleted_packages {
 
     my @packages;
     foreach my $obsolete ($package->get_obsoletes()) {
-        my $pattern = $self->get_package_class()->pattern($obsolete);
+        my $pattern = $self->get_package_class()->get_pattern($obsolete);
         push(@packages,
             map { $self->get_package_class()->new(file => $_) }
             $self->get_files(
@@ -269,7 +269,7 @@ sub get_installation_file {
     return 
         $self->get_install_dir($package, $target, $define) .
         '/' .
-        $package->get_filename();
+        $package->get_file_name();
 }
 
 =head2 get_package_class()
