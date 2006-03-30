@@ -129,7 +129,7 @@ sub get_releases {
         map { $self->get_package_class()->new(file => $_) }
         $self->get_files(
             $self->{_install_root},
-            $self->get_internal_install_dir($package, $target, $define),
+            $self->get_install_path($package, $target, $define),
             $self->get_package_class()->get_pattern($package->get_name())
         );
 
@@ -158,7 +158,7 @@ sub get_obsoleted_packages {
             map { $self->get_package_class()->new(file => $_) }
             $self->get_files(
                 $self->{_install_root},
-                $self->get_internal_install_dir($package, $target, $define),
+                $self->get_install_path($package, $target, $define),
                 $pattern
             )
         );
@@ -204,6 +204,19 @@ sub get_files {
     return @files;
 }
 
+=head2 get_install_root()
+
+Returns installation root
+
+=cut
+
+sub get_install_root {
+    my ($self) = @_;
+    croak "Not a class method" unless ref $self;
+
+    return $self->{_install_root};
+}
+
 =head2 get_install_dir($package, $target, $define)
 
 Returns install destination directory for given L<Youri::Package> object
@@ -218,7 +231,20 @@ sub get_install_dir {
     return
         $self->{_install_root} .
         '/' .
-        $self->get_internal_install_dir($package, $target, $define);
+        $self->get_install_path($package, $target, $define);
+}
+
+=head2 get_archive_root()
+
+Returns archiving root
+
+=cut
+
+sub get_archive_root {
+    my ($self) = @_;
+    croak "Not a class method" unless ref $self;
+
+    return $self->{_archive_root};
 }
 
 =head2 get_archive_dir($package, $target, $define)
@@ -235,7 +261,20 @@ sub get_archive_dir {
     return
         $self->{_archive_root} .
         '/' .
-        $self->get_internal_archive_dir($package, $target, $define);
+        $self->get_archive_path($package, $target, $define);
+}
+
+=head2 get_version_root()
+
+Returns versionning root
+
+=cut
+
+sub get_version_root {
+    my ($self) = @_;
+    croak "Not a class method" unless ref $self;
+
+    return $self->{_version_root};
 }
 
 =head2 get_version_dir($package, $target, $define)
@@ -252,7 +291,7 @@ sub get_version_dir {
     return
         $self->{_version_root} .
         '/' .
-        $self->get_internal_version_dir($package, $target, $define);
+        $self->get_version_path($package, $target, $define);
 }
 
 =head2 get_install_file($package, $target, $define)
@@ -262,7 +301,7 @@ given target.
 
 =cut
 
-sub get_installation_file {
+sub get_install_file {
     my ($self, $package, $target, $define) = @_;
     croak "Not a class method" unless ref $self;
 
@@ -276,20 +315,20 @@ sub get_installation_file {
 
 Return package class for this repository.
 
-=head2 get_internal_installation_dir($package, $target, $define)
+=head2 get_install_path($package, $target, $define)
 
-Returns internal (relative to repository top-level) installation destination
-directory for given L<Youri::Package> object and given target.
+Returns installation destination path (relative to repository root) for given
+L<Youri::Package> object and given target.
 
-=head2 get_internal_archive_dir($package, $target, $define)
+=head2 get_archive_path($package, $target, $define)
 
-Returns internal (relative to repository top-level) archiving destination
-directory for given L<Youri::Package> object and given target.
+Returns archiving destination path (relative to repository root) for given
+L<Youri::Package> object and given target.
 
-=head2 get_internal_version_dir($package, $target, $define)
+=head2 get_version_path($package, $target, $define)
 
-Returns internal (relative to repository top-level) versioning destionation
-directory for given L<Youri::Package> object and given target.
+Returns versioning destination path (relative to repository root) for given
+L<Youri::Package> object and given target.
 
 =head1 SUBCLASSING
 
@@ -297,11 +336,11 @@ The following methods have to be implemented:
 
 =over
 
-=item get_internal_install_dir
+=item get_install_path
 
-=item get_internal_archive_dir
+=item get_archive_path
 
-=item get_internal_version_dir
+=item get_version_path
 
 =back
 
