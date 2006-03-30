@@ -38,6 +38,9 @@ sub new {
         @_
     );
 
+    croak "no install root" unless $options{install_root};
+    croak "invalid install root" unless -d $options{install_root};
+
     my $self = bless {
         _install_root  => $options{install_root},
         _archive_root  => $options{archive_root},
@@ -125,6 +128,7 @@ sub get_releases {
     my @packages = 
         map { $self->get_package_class()->new(file => $_) }
         $self->get_files(
+            $self->{_install_root},
             $self->get_internal_install_dir($package, $target, $define),
             $self->get_package_class()->pattern($package->get_name())
         );
@@ -153,6 +157,7 @@ sub get_obsoleted_packages {
         push(@packages,
             map { $self->get_package_class()->new(file => $_) }
             $self->get_files(
+                $self->{_install_root},
                 $self->get_internal_install_dir($package, $target, $define),
                 $pattern
             )
@@ -186,13 +191,13 @@ list of files.
 =cut
 
 sub get_files {
-    my ($self, $path, $pattern) = @_;
+    my ($self, $root, $path, $pattern) = @_;
     croak "Not a class method" unless ref $self;
-    print "Looking for files in $self->{_path}/$path\n" if $self->{_test};
+    print "Looking for files in $root/$path\n" if $self->{_verbose};
 
     my @files =
         grep { -f }
-        glob "$self->{_path}/$path/*";
+        glob "$root/$path/*";
 
     @files = grep { /$pattern/ } @files if $pattern;
 
