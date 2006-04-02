@@ -70,7 +70,7 @@ list of C<Youri::Package> objects.
 sub get_older_revisions {
     my ($self, $package, $target, $define) = @_;
     croak "Not a class method" unless ref $self;
-    print "Looking for older package $package revisions for $target\n"
+    print "Looking for package $package older revisions for $target\n"
         if $self->{_verbose} > 0;
 
     return $self->get_revisions(
@@ -91,7 +91,7 @@ single C<Youri::Package> object.
 sub get_last_older_revision {
     my ($self, $package, $target, $define) = @_;
     croak "Not a class method" unless ref $self;
-    print "Looking for last older package $package revision for $target\n"
+    print "Looking for package $package last older revision for $target\n"
         if $self->{_verbose} > 0;
 
     return ($self->get_older_revisions($package, $target, $define))[0];
@@ -107,7 +107,7 @@ list of C<Youri::Package> objects.
 sub get_newer_revisions {
     my ($self, $package, $target, $define) = @_;
     croak "Not a class method" unless ref $self;
-    print "Looking for newer package $package revisions for $target\n"
+    print "Looking for package $package newer revisions for $target\n"
         if $self->{_verbose} > 0;
 
     return $self->get_revisions(
