@@ -62,18 +62,18 @@ sub _init {
 
 
 
-=head2 get_older_releases($package, $target, $define)
+=head2 get_older_revisions($package, $target, $define)
 
-Get all older releases from a package found in its installation directory, as a
+Get all older revisions from a package found in its installation directory, as a
 list of C<Youri::Package> objects.
 
 =cut
 
-sub get_older_releases {
+sub get_older_revisions {
     my ($self, $package, $target, $define) = @_;
     croak "Not a class method" unless ref $self;
 
-    return $self->get_releases(
+    return $self->get_revisions(
         $package,
         $target,
         $define,
@@ -81,31 +81,31 @@ sub get_older_releases {
     );
 }
 
-=head2 get_last_older_release($package, $target, $define)
+=head2 get_last_older_revision($package, $target, $define)
 
-Get last older release from a package found in its installation directory, as a
+Get last older revision from a package found in its installation directory, as a
 single C<Youri::Package> object.
 
 =cut
 
-sub get_last_older_release {
+sub get_last_older_revision {
     my ($self, $package, $target, $define) = @_;
     croak "Not a class method" unless ref $self;
 
-    return ($self->get_older_releases($package, $target, $define))[0];
+    return ($self->get_older_revisions($package, $target, $define))[0];
 }
 
-=head2 get_newer_releases($package, $target, $define)
+=head2 get_newer_revisions($package, $target, $define)
 
-Get all newer releases from a package found in its installation directory, as a
+Get all newer revisions from a package found in its installation directory, as a
 list of C<Youri::Package> objects.
 
 =cut
 
-sub get_newer_releases {
+sub get_newer_revisions {
     my ($self, $package, $target, $define) = @_;
 
-    return $self->get_releases(
+    return $self->get_revisions(
         $package,
         $target,
         $define,
@@ -114,14 +114,14 @@ sub get_newer_releases {
 }
 
 
-=head2 get_releases($package, $target, $define, $filter)
+=head2 get_revisions($package, $target, $define, $filter)
 
-Get all releases from a package found in its installation directory, using an
+Get all revisions from a package found in its installation directory, using an
 optional filter, as a list of C<Youri::Package> objects.
 
 =cut
 
-sub get_releases {
+sub get_revisions {
     my ($self, $package, $target, $define, $filter) = @_;
     croak "Not a class method" unless ref $self;
 
@@ -136,7 +136,7 @@ sub get_releases {
     @packages = grep { $filter->($_) } @packages if $filter;
 
     return
-        sort { $b->compare($a) } # sort by release order
+        sort { $b->compare($a) } # sort by revision order
         @packages;
 }
 
@@ -179,7 +179,7 @@ sub get_replaced_packages {
     croak "Not a class method" unless ref $self;
 
     return 
-        $self->get_older_releases($package, $target, $define),
+        $self->get_older_revisions($package, $target, $define),
         $self->get_obsoleted_packages($package, $target, $define);
 }
 
