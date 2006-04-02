@@ -60,8 +60,6 @@ sub _init {
 
 =head1 INSTANCE METHODS
 
-
-
 =head2 get_older_revisions($package, $target, $define)
 
 Get all older revisions from a package found in its installation directory, as a
@@ -72,6 +70,8 @@ list of C<Youri::Package> objects.
 sub get_older_revisions {
     my ($self, $package, $target, $define) = @_;
     croak "Not a class method" unless ref $self;
+    print "Looking for older package $package revisions for $target\n"
+        if $self->{_verbose} > 0;
 
     return $self->get_revisions(
         $package,
@@ -91,6 +91,8 @@ single C<Youri::Package> object.
 sub get_last_older_revision {
     my ($self, $package, $target, $define) = @_;
     croak "Not a class method" unless ref $self;
+    print "Looking for last older package $package revision for $target\n"
+        if $self->{_verbose} > 0;
 
     return ($self->get_older_revisions($package, $target, $define))[0];
 }
@@ -104,6 +106,9 @@ list of C<Youri::Package> objects.
 
 sub get_newer_revisions {
     my ($self, $package, $target, $define) = @_;
+    croak "Not a class method" unless ref $self;
+    print "Looking for newer package $package revisions for $target\n"
+        if $self->{_verbose} > 0;
 
     return $self->get_revisions(
         $package,
@@ -124,6 +129,8 @@ optional filter, as a list of C<Youri::Package> objects.
 sub get_revisions {
     my ($self, $package, $target, $define, $filter) = @_;
     croak "Not a class method" unless ref $self;
+    print "Looking for package $package revisions for $target\n"
+        if $self->{_verbose} > 0;
 
     my @packages = 
         map { $self->get_package_class()->new(file => $_) }
@@ -150,6 +157,8 @@ objects.
 sub get_obsoleted_packages {
     my ($self, $package, $target, $define) = @_;
     croak "Not a class method" unless ref $self;
+    print "Looking for packages obsoleted by $package for $target\n"
+        if $self->{_verbose} > 0;
 
     my @packages;
     foreach my $obsolete ($package->get_obsoletes()) {
@@ -177,6 +186,8 @@ objects.
 sub get_replaced_packages {
     my ($self, $package, $target, $define) = @_;
     croak "Not a class method" unless ref $self;
+    print "Looking for packages replaced by $package for $target\n"
+        if $self->{_verbose} > 0;
 
     return 
         $self->get_older_revisions($package, $target, $define),
@@ -193,7 +204,8 @@ list of files.
 sub get_files {
     my ($self, $root, $path, $pattern) = @_;
     croak "Not a class method" unless ref $self;
-    print "Looking for files in $root/$path\n" if $self->{_verbose};
+    print "Looking for files matching $pattern in $root/$path\n"
+        if $self->{_verbose} > 1;
 
     my @files =
         grep { -f }
