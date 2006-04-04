@@ -14,6 +14,7 @@ This abstract class defines Youri::Upload::Repository interface.
 use warnings;
 use strict;
 use Carp;
+use Youri::Package;
 
 =head1 CLASS METHODS
 
@@ -162,7 +163,7 @@ sub get_obsoleted_packages {
 
     my @packages;
     foreach my $obsolete ($package->get_obsoletes()) {
-        my $pattern = $self->get_package_class()->get_pattern($obsolete);
+        my $pattern = $self->get_package_class()->get_pattern($obsolete->[Youri::Package::DEPENDENCY_NAME]);
         push(@packages,
             map { $self->get_package_class()->new(file => $_) }
             $self->get_files(
