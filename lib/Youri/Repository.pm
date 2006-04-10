@@ -39,6 +39,8 @@ sub new {
         @_
     );
 
+    croak "Abstract class" if $class eq __PACKAGE__;
+
     croak "no install root" unless $options{install_root};
     croak "invalid install root" unless -d $options{install_root};
 
