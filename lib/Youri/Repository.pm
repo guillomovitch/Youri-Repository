@@ -3,11 +3,11 @@ package Youri::Repository;
 
 =head1 NAME
 
-Youri::Repository - Abstract repository module class
+Youri::Repository - Abstract repository
 
 =head1 DESCRIPTION
 
-This abstract class defines Youri::Upload::Repository interface.
+This abstract class defines Youri::Repository interface.
 
 =cut
 
