@@ -29,7 +29,9 @@ Warning: do not call directly, call subclass constructor instead.
 =cut
 
 sub new {
-    my $class   = shift;
+    my $class = shift;
+    croak "Abstract class" if $class eq __PACKAGE__;
+
     my %options = (
         install_root  => '', # path to top-level directory
         archive_root  => '', # path to top-level directory
@@ -39,7 +41,6 @@ sub new {
         @_
     );
 
-    croak "Abstract class" if $class eq __PACKAGE__;
 
     croak "no install root" unless $options{install_root};
     croak "invalid install root" unless -d $options{install_root};
