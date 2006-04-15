@@ -14,6 +14,7 @@ This abstract class defines Youri::Repository interface.
 use warnings;
 use strict;
 use Carp;
+use File::Basename;
 use Youri::Package;
 
 =head1 CLASS METHODS
@@ -200,8 +201,8 @@ sub get_replaced_packages {
 
 =head2 get_files($path, $pattern)
 
-Get all files found in a directory, using an optional filtering pattern, as a
-list of files.
+Get all files found in a directory, using an optional filtering pattern
+(applied to the whole file name), as a list of files.
 
 =cut
 
@@ -215,7 +216,10 @@ sub get_files {
         grep { -f }
         glob "$root/$path/*";
 
-    @files = grep { /$pattern/ } @files if $pattern;
+    @files =
+        grep { basename($_) =~ /^$pattern$/ }
+        @files
+        if $pattern;
 
     return @files;
 }
