@@ -68,7 +68,7 @@ sub _init {
 =head2 get_older_revisions($package, $target, $define)
 
 Get all older revisions from a package found in its installation directory, as a
-list of C<Youri::Package> objects.
+list of L<Youri::Package> objects.
 
 =cut
 
@@ -89,7 +89,7 @@ sub get_older_revisions {
 =head2 get_last_older_revision($package, $target, $define)
 
 Get last older revision from a package found in its installation directory, as a
-single C<Youri::Package> object.
+single L<Youri::Package> object.
 
 =cut
 
@@ -105,7 +105,7 @@ sub get_last_older_revision {
 =head2 get_newer_revisions($package, $target, $define)
 
 Get all newer revisions from a package found in its installation directory, as a
-list of C<Youri::Package> objects.
+list of L<Youri::Package> objects.
 
 =cut
 
@@ -127,7 +127,7 @@ sub get_newer_revisions {
 =head2 get_revisions($package, $target, $define, $filter)
 
 Get all revisions from a package found in its installation directory, using an
-optional filter, as a list of C<Youri::Package> objects.
+optional filter, as a list of L<Youri::Package> objects.
 
 =cut
 
@@ -154,7 +154,7 @@ sub get_revisions {
 
 =head2 get_obsoleted_packages($package, $target, $define)
 
-Get all packages obsoleted by given one, as a list of C<Youri::Package>
+Get all packages obsoleted by given one, as a list of L<Youri::Package>
 objects.
 
 =cut
@@ -183,7 +183,7 @@ sub get_obsoleted_packages {
 
 =head2 get_replaced_packages($package, $target, $define)
 
-Get all packages replaced by given one, as a list of C<Youri::Package>
+Get all packages replaced by given one, as a list of L<Youri::Package>
 objects.
 
 =cut
