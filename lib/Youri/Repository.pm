@@ -19,6 +19,10 @@ use Youri::Package;
 
 =head1 CLASS METHODS
 
+=head2 get_package_class()
+
+Return package class for this repository.
+
 =head2 new(%args)
 
 Creates and returns a new Youri::Repository object.
@@ -330,10 +334,6 @@ sub get_install_file {
         '/' .
         $package->get_file_name();
 }
-
-=head2 get_package_class()
-
-Return package class for this repository.
 
 =head2 get_install_path($package, $target, $define)
 
