@@ -23,6 +23,10 @@ use Youri::Package;
 
 Return package class for this repository.
 
+=head2 get_package_charset()
+
+Return package charset for this repository.
+
 =head2 new(%args)
 
 Creates and returns a new Youri::Repository object.
