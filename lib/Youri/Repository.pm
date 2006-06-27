@@ -150,7 +150,12 @@ sub get_revisions {
         $self->get_files(
             $self->{_install_root},
             $self->get_install_path($package, $target, $define),
-            $self->get_package_class()->get_pattern($package->get_name())
+            $self->get_package_class()->get_pattern(
+                $package->get_name(),
+                undef,
+                undef,
+                $package->get_arch(),
+            );
         );
 
     @packages = grep { $filter->($_) } @packages if $filter;
