@@ -155,7 +155,7 @@ sub get_revisions {
                 undef,
                 undef,
                 $package->get_arch(),
-            );
+            )
         );
 
     @packages = grep { $filter->($_) } @packages if $filter;
