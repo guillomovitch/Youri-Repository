@@ -13,7 +13,7 @@ WriteMakefile(
 sub MY::postamble {
    return <<'EOF';
 .PHONY: svntag
-SVNPATH = svn+ssh://youri.zarb.org/home/projects/youri/soft/Repository
+SVNPATH = svn+ssh://youri.zarb.org/home/projects/youri/svn/soft/Repository
 
 svntag:
 	svn copy -m 'new release $(VERSION)'\
