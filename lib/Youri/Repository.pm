@@ -17,7 +17,7 @@ use Carp;
 use File::Basename;
 use Youri::Package;
 
-our $VERSION = 0.1;
+our $VERSION = 0.1.0;
 
 =head1 CLASS METHODS
 
