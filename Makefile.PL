@@ -9,3 +9,16 @@ WriteMakefile(
         'Youri::Package' => 0,
     }
 );
+
+sub MY::postamble {
+   return <<'EOF';
+.PHONY: svntag
+SVNPATH = svn+ssh://youri.zarb.org/home/projects/youri/soft/Repository
+
+svntag:
+	svn copy -m 'new release $(VERSION)'\
+		$(SVNPATH)/trunk \
+		$(SVNPATH)/tags/release-$(VERSION)
+
+EOF
+}
