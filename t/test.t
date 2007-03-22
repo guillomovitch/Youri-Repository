@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: /local/youri/soft/trunk/t/version.t 2257 2006-07-05T09:22:47.088572Z guillaume  $
+# $Id$
 
 use strict;
 use Test::More tests => 8;
