@@ -185,23 +185,28 @@ sub get_revisions {
     print "Looking for package $package revisions for $target\n"
         if $self->{_verbose} > 0;
 
+    my @arches = $package->get_arch() eq 'noarch' ?
+                     ( $self->get_extra_arches(), 'noarch' ) :
+                     ( $package->get_arch(), 'noarch' );
     my @packages = 
         map { $self->get_package_class()->new(file => $_) }
-        $self->get_files(
-            $self->{_install_root},
-            $self->get_install_path(
-                $package,
-                $target,
-                $user_context,
-                $app_context
-            ),
-            $self->get_package_class()->get_pattern(
-                $package->get_name(),
-                undef,
-                undef,
-                $package->get_arch(),
-            )
-        );
+        map {
+	    $self->get_files(
+                $self->{_install_root},
+                $self->get_install_path(
+                    $package,
+                    $target,
+                    $user_context,
+                    $app_context
+                ),
+		$self->get_package_class()->get_pattern(
+                    $package->get_name(),
+                    undef,
+                    undef,
+                    $_
+                )
+            );
+        } @arches;
 
     @packages = grep { $filter->($_) } @packages if $filter;
 
@@ -262,14 +267,6 @@ sub get_replaced_packages {
 
     my @list;
 
-    # collect all older revisions
-    push(@list, $self->get_older_revisions(
-        $package,
-        $target,
-        $user_context,
-        $app_context
-    ));
-
     # noarch packages are potentially linked from other directories
     if ($package->get_arch() eq 'noarch') {
         foreach my $arch ($self->get_extra_arches()) {
@@ -280,6 +277,13 @@ sub get_replaced_packages {
                 { arch => $arch }
             ));
         }
+    } else {
+        push(@list, $self->get_older_revisions(
+            $package,
+            $target,
+            $user_context,
+            $app_context
+        ));
     }
 
     # collect all obsoleted packages

@@ -2,14 +2,17 @@
 # $Id$
 
 use strict;
-use Test::More tests => 8;
+use Test::More tests => 10;
 use Youri::Package::RPM::Test;
 
 BEGIN {
     use_ok('Youri::Repository::Test');
 }
 
-my $repository = Youri::Repository::Test->new(cleanup => 0);
+my $repository = Youri::Repository::Test->new(
+    cleanup => 0,
+    extra_arches => [ 'i586' ]
+);
 isa_ok($repository, 'Youri::Repository::Test');
 
 my $foo1 = Youri::Package::RPM::Test->new(tags => {
@@ -92,4 +95,31 @@ is_deeply(
     ],
     [ ],
     'third libified package release replaces nothing'
+);
+
+my $noarchfoo4 = Youri::Package::RPM::Test->new(tags => {
+    name => 'foo', version => 4, release => 1, arch => 'noarch'
+});
+is_deeply(
+    [
+        map { $_->as_file() }
+        $repository->get_replaced_packages($noarchfoo4)
+    ],
+    [ $foo2_path, $foo1_path ],
+    'noarch package replaces i586 ones'
+);
+
+my $noarchfoo4_path = $dir . '/' . $noarchfoo4->get_tag('filename');
+system("touch $noarchfoo4_path");
+
+my $foo5 = Youri::Package::RPM::Test->new(tags => {
+    name => 'foo', version => 5, release => 1, arch => 'i586'
+});
+is_deeply(
+    [
+        map { $_->as_file() }
+        $repository->get_replaced_packages($foo5)
+    ],
+    [ $noarchfoo4_path, $foo2_path, $foo1_path ],
+    'fifth package replaces all the ones with same name'
 );

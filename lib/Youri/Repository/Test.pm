@@ -36,7 +36,8 @@ sub new {
         version_root => $dir,
     );
 
-    $self->{_package_class}   = $options{package_class};
+    $self->{_package_class}  = $options{package_class};
+    $self->{_extra_arches}   = $options{extra_arches};
 
     return $self;
 }
