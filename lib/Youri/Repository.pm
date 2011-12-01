@@ -268,15 +268,21 @@ sub get_replaced_packages {
     my @list;
 
     # noarch packages are potentially linked from other directories
-    if ($package->get_arch() eq 'noarch') {
-        foreach my $arch ($self->get_extra_arches()) {
-            push(@list, $self->get_older_revisions(
-                $package,
-                $target,
-                $user_context,
-                { arch => $arch }
-            ));
-        }
+    my @arches = $package->get_arch() eq 'noarch' ?
+                 $self->get_extra_arches() : ( $package->get_arch() );
+    foreach my $arch (@arches) {
+        push(@list, $self->get_older_revisions(
+            $package,
+            $target,
+            $user_context,
+            { arch => $arch }
+        ));
+        push(@list, $self->get_obsoleted_packages(
+            $package,
+            $target,
+            $user_context,
+            { arch => $arch }
+        ));
     } else {
         push(@list, $self->get_older_revisions(
             $package,
@@ -285,14 +291,6 @@ sub get_replaced_packages {
             $app_context
         ));
     }
-
-    # collect all obsoleted packages
-    push(@list, $self->get_obsoleted_packages(
-        $package,
-        $target,
-        $user_context,
-        $app_context
-    ));
 
     return @list;
 }
