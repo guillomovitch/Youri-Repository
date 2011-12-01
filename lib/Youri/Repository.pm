@@ -283,13 +283,6 @@ sub get_replaced_packages {
             $user_context,
             { arch => $arch }
         ));
-    } else {
-        push(@list, $self->get_older_revisions(
-            $package,
-            $target,
-            $user_context,
-            $app_context
-        ));
     }
 
     return @list;
