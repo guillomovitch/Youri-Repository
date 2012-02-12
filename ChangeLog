@@ -1,2 +1,5 @@
+2012-02-12 Pascal Terjan <pterjan@zarb.org> 0.1.1
+	* Handle packages switching between arch specific and noarch
+
 2007-03-05 Guillaume Rousse <guillomovitch@zarb.org> 0.1.0
 	* initial release

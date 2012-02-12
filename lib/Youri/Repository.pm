@@ -16,7 +16,7 @@ use strict;
 use Carp;
 use File::Basename;
 use Youri::Package;
-use version; our $VERSION = qv('0.1.0');
+use version; our $VERSION = qv('0.1.1');
 
 =head1 CLASS METHODS
 
