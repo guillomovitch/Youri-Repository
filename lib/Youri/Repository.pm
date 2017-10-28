@@ -115,7 +115,8 @@ with noarch packages for a given target.
 sub get_target_arches {
     my ($self, $target) = @_;
     croak "Not a class method" unless ref $self;
-    return @{$self->{_arch}{$target} || $self->{_extra_arches}};
+    return $target && $self->{_arch}{$target} ? 
+        @{$self->{_arch}{$target}} : @{$self->{_extra_arches}};
 }
 
 
