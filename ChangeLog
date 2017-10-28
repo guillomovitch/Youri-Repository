@@ -1,3 +1,7 @@
+2017-10-28 Guillaume Rousse <guillomovitch@zarb.org> 0.1.3
+	* better handling of noarch packages during packages lookup
+	(Pascal Terjan, Olivier Blin)
+
 2017-10-28 Guillaume Rousse <guillomovitch@zarb.org> 0.1.2
 	* complete dependencies list
 	* make perlcritic happier
