@@ -13,6 +13,7 @@ WriteMakefile(
         'Carp'                      => 0,
         'File::Basename'            => 0,
         'File::Temp'                => 0,
+        'List::MoreUtils'           => 0,
         'Youri::Package'            => 0,
     },
     TEST_REQUIRES  => {
