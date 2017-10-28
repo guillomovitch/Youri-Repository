@@ -209,10 +209,11 @@ sub get_revisions {
         } @arches;
 
     @packages = grep { $filter->($_) } @packages if $filter;
+    #
+    # sort by revision order
+    @packages = sort { $b->compare($a) } @packages;
 
-    return
-        sort { $b->compare($a) } # sort by revision order
-        @packages;
+    return @packages;
 }
 
 =head2 get_obsoleted_packages($package, $target, $user_context, $app_context)
