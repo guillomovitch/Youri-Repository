@@ -16,6 +16,7 @@ use strict;
 use Carp;
 use File::Basename;
 use Youri::Package;
+use List::MoreUtils qw(uniq);
 use version; our $VERSION = qv('0.1.2');
 
 =head1 CLASS METHODS
@@ -104,6 +105,20 @@ sub get_extra_arches {
 }
 
 
+=head2 get_target_arches()
+
+Return the list of additional archictectures to handle when dealing
+with noarch packages for a given target.
+
+=cut
+
+sub get_target_arches {
+    my ($self, $target) = @_;
+    croak "Not a class method" unless ref $self;
+    return @{$self->{_arch}{$target} || $self->{_extra_arches}};
+}
+
+
 =head2 get_older_revisions($package, $target, $user_context, $app_context)
 
 Get all older revisions from a package found in its installation directory, as a
@@ -186,7 +201,7 @@ sub get_revisions {
         if $self->{_verbose} > 0;
 
     my @arches = $package->get_arch() eq 'noarch' ?
-                     ( $self->get_extra_arches(), 'noarch' ) :
+                     ( $self->get_target_arches($target), 'noarch' ) :
                      ( $package->get_arch(), 'noarch' );
     my @packages = 
         map { $self->get_package_class()->new(file => $_) }
@@ -270,7 +285,8 @@ sub get_replaced_packages {
 
     # noarch packages are potentially linked from other directories
     my @arches = $package->get_arch() eq 'noarch' ?
-                 $self->get_extra_arches() : ( $package->get_arch() );
+                     ( $self->get_target_arches($target), 'noarch' ) :
+                     ( $package->get_arch(), 'noarch' );
     foreach my $arch (@arches) {
         push(@list, $self->get_older_revisions(
             $package,
@@ -286,7 +302,7 @@ sub get_replaced_packages {
         ));
     }
 
-    return @list;
+    return uniq(@list);
 }
 
 =head2 get_files($path, $pattern)
