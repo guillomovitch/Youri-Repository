@@ -1,3 +1,6 @@
+2017-11-13 Guillaume Rousse <guillomovitch@zarb.org> 0.1.5
+	* exclude old version from itself from distribution (cpan bug #123616)
+
 2017-11-11 Guillaume Rousse <guillomovitch@zarb.org> 0.1.4
 	* exclude MYMETA.* from distribution (cpan bug #123589)
 
