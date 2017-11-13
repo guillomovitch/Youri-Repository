@@ -15,3 +15,4 @@
 ^Makefile$
 ^Makefile\.old$
 ^MYMETA\.(json|yml)$
+^Youri-Repository-[\d.]+/
