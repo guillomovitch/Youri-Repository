@@ -17,7 +17,7 @@ use Carp;
 use File::Basename;
 use Youri::Package;
 use List::UtilsBy qw(uniq_by);
-use version; our $VERSION = qv('0.1.5');
+use version; our $VERSION = qv('0.1.6');
 
 =head1 CLASS METHODS
 
