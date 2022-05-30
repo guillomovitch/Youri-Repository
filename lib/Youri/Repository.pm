@@ -16,8 +16,8 @@ use strict;
 use Carp;
 use File::Basename;
 use Youri::Package;
-use List::MoreUtils qw(uniq);
-use version; our $VERSION = qv('0.1.5');
+use List::UtilsBy qw(uniq_by);
+use version; our $VERSION = qv('0.1.6');
 
 =head1 CLASS METHODS
 
@@ -303,7 +303,7 @@ sub get_replaced_packages {
         ));
     }
 
-    return uniq(@list);
+    return uniq_by { $_->as_file() } @list;
 }
 
 =head2 get_files($path, $pattern)

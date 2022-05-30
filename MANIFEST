@@ -1,0 +1,12 @@
+ChangeLog
+lib/Youri/Repository.pm
+lib/Youri/Repository/Test.pm
+Makefile.PL
+MANIFEST
+README
+t/kwalitee.t
+t/perlcritic.t
+t/pod-coverage.t
+t/pod.t
+t/prereq.t
+t/test.t
