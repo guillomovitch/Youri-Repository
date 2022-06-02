@@ -1,5 +1,6 @@
-2022-05-30 Pascal Terjan <pterjan@gmail.com> 0.1.6
+2022-06-02 Pascal Terjan <pterjan@gmail.com> 0.1.6
 	* keep replicated packages in get_replaced_packages
+	* add repository metadata in Makefile.PL
 
 2017-11-13 Guillaume Rousse <guillomovitch@zarb.org> 0.1.5
 	* exclude old version from itself from distribution (cpan bug #123616)
